@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">mobile_auth</string>
+    <string name="enter_login">enter_login</string>
+    <string name="enter_password">enter_password</string>
+    <string name="login">login</string>
+    <string name="registration">registration</string>
+    <string name="enter_name">enter_name</string>
+</resources>

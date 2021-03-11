@@ -77,8 +77,6 @@ class MainActivity :
                         "Неуспешная аутентификация",
                         Toast.LENGTH_LONG
                     ).show()
-
-
                 }
             }
         }
@@ -103,7 +101,6 @@ class MainActivity :
                         "Неуспешная регистрация",
                         Toast.LENGTH_LONG
                     ).show()
-
                 }
             }
         }

@@ -9,9 +9,9 @@ import retrofit2.http.Query
 
 interface API {
     // URL запроса (без учета основного адреса)
-    @POST("/authentication")
+    @POST("/api/v1/authentication")
     suspend fun authenticate(@Body authRequestParams: AuthRequestParams): Response<Token>
 
-    @POST("/registration")
+    @POST("/api/v1/registration")
     suspend fun registration(@Body authRequestParams: AuthRequestParams): Response<Token>
 }

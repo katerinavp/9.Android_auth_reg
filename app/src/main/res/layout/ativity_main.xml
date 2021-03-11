@@ -6,32 +6,33 @@
     android:padding="24dp">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLogin"
+        android:id="@+id/textInputLogin2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_login"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintBottom_toTopOf="@id/textInputPassword"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintBottom_toTopOf="@id/textInputPassword2"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
              />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputPassword"
+        android:id="@+id/textInputPassword2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toTopOf="@id/btnLog"
-        app:layout_constraintTop_toBottomOf="@id/textInputLogin"
+        app:layout_constraintTop_toBottomOf="@id/textInputLogin2"
         android:hint="@string/enter_password"
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPassword"/>
@@ -48,7 +49,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputPassword2" />
 
     <Button
         android:id="@+id/btnReg"

@@ -6,87 +6,109 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputEditText
 import com.petukhova.mobile_auth.R
 import com.petukhova.mobile_auth.Repository
 import com.petukhova.mobile_auth.Token
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class MainActivity: AppCompatActivity() { // можно здесь указать ссылку на xml файл вместо setContentView
+class MainActivity :
+    AppCompatActivity() { // можно здесь указать ссылку на xml файл вместо setContentView
 
     var authenticated = false
-    private lateinit var btnLog: Button
-    private lateinit var btnReg: Button
-    private lateinit var textInputLogin: TextInputLayout
-    private lateinit var textInputPassword: TextInputLayout
+    private val btnLog: Button by lazy { findViewById(R.id.btnLog) }
+    private val btnReg: Button by lazy { findViewById(R.id.btnReg) }
+    private val textInputLogin: TextInputEditText by lazy { findViewById(R.id.textInputLogin) }
+    private val textInputPassword: TextInputEditText by lazy { findViewById(R.id.textInputPassword) }
 
-    //можно объявить MainActivity, как CoroutineScope
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ativity_main)
-        init()
-        authAndReg()
+        checkAuth()
+        btnLog.setOnClickListener { auth() }
+        btnReg.setOnClickListener { registration() }
+
     }
 
-    private fun init() {
-        btnLog = findViewById<Button>(R.id.btnLog)
-        btnReg = findViewById<Button>(R.id.btnReg)
-        textInputLogin = findViewById<TextInputLayout>(R.id.textInputLogin)
-        textInputPassword = findViewById<TextInputLayout>(R.id.textInputPassword)
-    }
-
-    private fun authAndReg() {
-
+    //Проверяем была ли аутентификация пользователя, чтобы при нажатии кнопки назад не попадать на повторную аутентифик-ю
+    private fun checkAuth() {
         if (authenticated) { // Если флаг true, то повторно аутентификацию не проходим и отправляем пользователя в активиити постов
             val feedActivityIntent = Intent(this@MainActivity, FeedActivity::class.java)
             startActivity(feedActivityIntent)
             finish()
-        } else { // иначе отправляем пользователя ввести логин и пароль для аутентификации
-            btnLog.setOnClickListener {
+        }
+    }
 
-                lifecycleScope.launch {
+    private fun checktextInput(): Boolean {
+        if (textInputLogin.text.toString().isEmpty() || textInputPassword.text.toString().isEmpty()) {
+            Toast.makeText(
+                this@MainActivity,
+                "Введите имя пользователя и пароль", Toast.LENGTH_LONG
+            ).show()
+            return false
+        } else {
+            return true
+        }
+    }
 
-                    if (textInputLogin.toString().isEmpty() || textInputPassword.toString()
-                            .isEmpty()
-                    ) {
-                        Toast.makeText(
-                            this@MainActivity, "Введите логин и пароль", Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        val login: String = textInputLogin.toString()
-                        val password: String = textInputPassword.toString()
-                        val token: Response<Token> = Repository.authenticate(login, password)
+    private fun auth() {
+        val login: String = textInputLogin.text.toString()
+        val password: String = textInputPassword.text.toString()
 
-                        if (token.isSuccessful) {
-                            authenticated = true
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Успешная авторизация",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val feedActivityIntent =
-                                Intent(this@MainActivity, FeedActivity::class.java)
-                            startActivity(feedActivityIntent)
-                            finish()
+        lifecycleScope.launch {
+            if (checktextInput()) {
+                val token = Repository.authenticate(login, password)
 
-                        } else {
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Неуспешная авторизация",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
+                if (token.isSuccessful) {
+                    authenticated = true
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Успешная аутентификация",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val feedActivityIntent =
+                        Intent(this@MainActivity, FeedActivity::class.java)
+                    startActivity(feedActivityIntent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Неуспешная аутентификация",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+
                 }
             }
+        }
+    }
 
-            btnReg.setOnClickListener {
-                val registrationIntent = Intent(this@MainActivity, RegistrationActivity::class.java)
-                startActivity(registrationIntent)
+    private fun registration() {
+        val userName: String = textInputLogin.text.toString()
+        val passwordReg: String = textInputPassword.text.toString()
+
+        lifecycleScope.launch {
+            if (checktextInput()) {
+                val token: Response<Token> = Repository.registration(userName, passwordReg)
+                if (token.isSuccessful) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Успешная регистрация",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Неуспешная регистрация",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                }
             }
-
         }
     }
 }
+
+
 

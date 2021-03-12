@@ -1,111 +1,121 @@
 package com.petukhova.mobile_auth.activity
 
-import android.content.Intent
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
+import android.widget.ProgressBar
+import androidx.core.content.edit
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
-import com.petukhova.mobile_auth.R
-import com.petukhova.mobile_auth.Repository
-import com.petukhova.mobile_auth.Token
+import com.petukhova.mobile_auth.*
+import isValid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Response
+import splitties.activities.start
+import splitties.toast.toast
 
 class MainActivity :
     AppCompatActivity() { // можно здесь указать ссылку на xml файл вместо setContentView
 
     var authenticated = false
+    private val progressBar: ProgressBar by lazy { findViewById(R.id.progressBar) }
     private val btnLog: Button by lazy { findViewById(R.id.btnLog) }
     private val btnReg: Button by lazy { findViewById(R.id.btnReg) }
     private val textInputLogin: TextInputEditText by lazy { findViewById(R.id.textInputLogin) }
     private val textInputPassword: TextInputEditText by lazy { findViewById(R.id.textInputPassword) }
+    val check = Check()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ativity_main)
-        checkAuth()
+        if (isAuthenticated()) {
+            goFeedActivity()
+        }
+
         btnLog.setOnClickListener { auth() }
-        btnReg.setOnClickListener { registration() }
+        btnReg.setOnClickListener { goRegActivity() }
 
-    }
-
-    //Проверяем была ли аутентификация пользователя, чтобы при нажатии кнопки назад не попадать на повторную аутентифик-ю
-    private fun checkAuth() {
-        if (authenticated) { // Если флаг true, то повторно аутентификацию не проходим и отправляем пользователя в активиити постов
-            val feedActivityIntent = Intent(this@MainActivity, FeedActivity::class.java)
-            startActivity(feedActivityIntent)
-            finish()
-        }
-    }
-
-    private fun checktextInput(): Boolean {
-        if (textInputLogin.text.toString().isEmpty() || textInputPassword.text.toString().isEmpty()) {
-            Toast.makeText(
-                this@MainActivity,
-                "Введите имя пользователя и пароль", Toast.LENGTH_LONG
-            ).show()
-            return false
-        } else {
-            return true
-        }
     }
 
     private fun auth() {
         val login: String = textInputLogin.text.toString()
         val password: String = textInputPassword.text.toString()
+        if (!check.checktextInputAuth(login, password)) { //  проверка на пустые поля ввода
+            toast(R.string.enter_login_password)
+        } else {
+            if (isValid(password)) {
+                textInputPassword.error = getString(R.string.check_password_length)
+            } else {
+                progressBar.isVisible =
+                    true // если проверка прошла успешно запускаем прогерссбар и корутину для отправки post запроса аутентификации на сервер
+                lifecycleScope.launch {
 
-        lifecycleScope.launch {
-            if (checktextInput()) {
-                val token = Repository.authenticate(login, password)
+                    delay(5000)
+                    try {
+                        val token = Repository.authenticate(login, password)
+                        progressBar.isInvisible = true
+                        if (token.isSuccessful) {
+                            authenticated = true
 
-                if (token.isSuccessful) {
-                    authenticated = true
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Успешная аутентификация",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    val feedActivityIntent =
-                        Intent(this@MainActivity, FeedActivity::class.java)
-                    startActivity(feedActivityIntent)
-                    finish()
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Неуспешная аутентификация",
-                        Toast.LENGTH_LONG
-                    ).show()
+                            setUserAuth(requireNotNull(token.body()).token) // 200 код
+
+                            toast(R.string.success_auth)
+                            goFeedActivity()
+
+                        } else {
+                            toast(R.string.Unsuccess_auth)
+                        }
+                    } catch (e: Exception) {
+                        //с помощью splitties можно сократить
+                        toast(R.string.turn_on_internet)
+                        //вместо
+//                    Toast.makeText(this@MainActivity, "Подключите интернет", Toast.LENGTH_LONG)
+//                        .show()
+                    }
                 }
             }
         }
     }
 
-    private fun registration() {
-        val userName: String = textInputLogin.text.toString()
-        val passwordReg: String = textInputPassword.text.toString()
+    private fun goRegActivity() {
+        //с помощью splitties можно сократить переход на другое активити
+        start<RegistrationActivity>()
+        finish()
 
-        lifecycleScope.launch {
-            if (checktextInput()) {
-                val token: Response<Token> = Repository.registration(userName, passwordReg)
-                if (token.isSuccessful) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Успешная регистрация",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Неуспешная регистрация",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        }
+    }
+
+    private fun isAuthenticated() =
+        getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE).getString(
+            AUTHENTICATED_SHARED_KEY, ""
+        )?.isNotEmpty() ?: false
+
+    private fun setUserAuth(token: String) =
+        getSharedPreferences(API_SHARED_FILE, Context.MODE_PRIVATE)
+            //extension можно использовать, не нужно вызывать apply
+            .edit { putString(AUTHENTICATED_SHARED_KEY, token) }
+    //вместо
+//            .edit()
+//            .putString(AUTHENTICATED_SHARED_KEY, token)
+//            .apply()
+
+
+    private fun goFeedActivity() {
+
+        //с помощью splitties можно сократить
+        start<FeedActivity>()
+        finish()
+        //вместо
+//        val feedActivityIntent =
+//            Intent(this@MainActivity, FeedActivity::class.java)
+//        startActivity(feedActivityIntent)
+//        finish()
     }
 }
+
+
 
 
 

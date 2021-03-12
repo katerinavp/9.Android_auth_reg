@@ -1,7 +1,6 @@
 package com.petukhova.mobile_auth
 
 import android.util.Log
-import com.petukhova.mobile_auth.Repository.authenticate
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

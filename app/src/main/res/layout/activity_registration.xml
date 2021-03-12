@@ -16,27 +16,48 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputUserName"
+        android:id="@+id/textInputUserName2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_name"
         app:layout_constraintBottom_toTopOf="@id/guidCenter"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintVertical_chainStyle="packed"
+        app:counterMaxLength="10">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputPassword"
+        android:id="@+id/textInputPassword2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_password"
         app:layout_constraintTop_toBottomOf="@id/guidCenter"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        app:counterMaxLength="15">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPasswordRepeat2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/repeate_password"
+        app:layout_constraintTop_toBottomOf="@id/textInputPassword2"
+        app:passwordToggleEnabled="true"
+        app:counterMaxLength="15">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputPasswordRepeat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPassword" />
@@ -52,12 +73,13 @@
 
     <Button
         android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Save"
+        android:text="@string/save"
+        android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputPasswordRepeat2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

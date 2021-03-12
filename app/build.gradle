@@ -61,5 +61,10 @@ dependencies {
     // Lifecycles only (without ViewModel or LiveData)
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0"
 
+    def splitties_version ="3.0.0-alpha06"
+    //Splitties
+    implementation("com.louiscad.splitties:splitties-activities:$splitties_version")
+    //Toast
+    implementation("com.louiscad.splitties:splitties-toast:$splitties_version")
 
 }

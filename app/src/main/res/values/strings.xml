@@ -5,4 +5,15 @@
     <string name="login">login</string>
     <string name="registration">registration</string>
     <string name="enter_name">enter_name</string>
+    <string name="repeate_password">repeate_password</string>
+    <string name="save">Save</string>
+    <string name="enter_login_password">"Введите логин и пароль"</string>
+    <string name="post_screen">Экран постов</string>
+    <string name="check_password_length"> Минимальная длина пароля - 6 символов, строка должна содержать хотя бы одну цифру, одну заглавную и строчную букву</string>
+    <string name="password_incorrect"> Пароли не совпадают</string>
+    <string name="success_reg"> Успешная регистрация</string>
+    <string name="unsuccess_reg"> Неуспешная регистрация</string>
+    <string name="success_auth"> Успешная аутентификация</string>
+    <string name="Unsuccess_auth"> Неуспешная аутентификация</string>
+    <string name="turn_on_internet"> Подключите интернет</string>
 </resources>

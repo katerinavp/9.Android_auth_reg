@@ -3,14 +3,13 @@ package com.petukhova.mobile_auth.activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ProgressBar
+import android.view.LayoutInflater
 import androidx.core.content.edit
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputEditText
 import com.petukhova.mobile_auth.*
+import com.petukhova.mobile_auth.databinding.ActivityAuthBinding
 import isValid
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,44 +18,43 @@ import splitties.toast.toast
 
 class MainActivity :
     AppCompatActivity() { // можно здесь указать ссылку на xml файл вместо setContentView
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityAuthBinding.inflate(LayoutInflater.from(this))
+    }
 
     var authenticated = false
-    private val progressBar: ProgressBar by lazy { findViewById(R.id.progressBar) }
-    private val btnLog: Button by lazy { findViewById(R.id.btnLog) }
-    private val btnReg: Button by lazy { findViewById(R.id.btnReg) }
-    private val textInputLogin: TextInputEditText by lazy { findViewById(R.id.textInputLogin) }
-    private val textInputPassword: TextInputEditText by lazy { findViewById(R.id.textInputPassword) }
+
     val check = Check()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ativity_main)
+        setContentView(binding.root)
         if (isAuthenticated()) {
             goFeedActivity()
         }
 
-        btnLog.setOnClickListener { auth() }
-        btnReg.setOnClickListener { goRegActivity() }
+        binding.btnLog.setOnClickListener { auth() }
+        binding.btnReg.setOnClickListener { goRegActivity() }
 
     }
 
     private fun auth() {
-        val login: String = textInputLogin.text.toString()
-        val password: String = textInputPassword.text.toString()
+        val login: String = binding.textInputLogin.text.toString()
+        val password: String = binding.textInputPassword.text.toString()
         if (!check.checktextInputAuth(login, password)) { //  проверка на пустые поля ввода
             toast(R.string.enter_login_password)
         } else {
             if (isValid(password)) {
-                textInputPassword.error = getString(R.string.check_password_length)
+                binding.textInputPassword.error = getString(R.string.check_password_length)
             } else {
-                progressBar.isVisible =
+                binding.progressBar.isVisible =
                     true // если проверка прошла успешно запускаем прогерссбар и корутину для отправки post запроса аутентификации на сервер
                 lifecycleScope.launch {
 
                     delay(5000)
                     try {
                         val token = Repository.authenticate(login, password)
-                        progressBar.isInvisible = true
+                        binding.progressBar.isInvisible = true
                         if (token.isSuccessful) {
                             authenticated = true
 

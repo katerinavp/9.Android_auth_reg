@@ -1,14 +1,14 @@
 package com.petukhova.mobile_auth.activity
 
 import android.os.Bundle
-import android.widget.Button
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputEditText
 import com.petukhova.mobile_auth.Check
 import com.petukhova.mobile_auth.R
 import com.petukhova.mobile_auth.Repository
 import com.petukhova.mobile_auth.Token
+import com.petukhova.mobile_auth.databinding.ActivityRegistrationBinding
 import isValid
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -16,23 +16,23 @@ import splitties.activities.start
 import splitties.toast.toast
 
 class RegistrationActivity : AppCompatActivity() {
-    private val btnSave: Button by lazy { findViewById(R.id.btnSave) }
-    private val textInputUserName: TextInputEditText by lazy { findViewById(R.id.textInputUserName) }
-    private val textInputPassword: TextInputEditText by lazy { findViewById(R.id.textInputPassword) }
-    private val textInputPasswordRepeat: TextInputEditText by lazy { findViewById(R.id.textInputPasswordRepeat) }
+
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityRegistrationBinding.inflate(LayoutInflater.from(this))
+    }
     val check = Check()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        btnSave.setOnClickListener { registration() }
+        binding.btnSave.setOnClickListener { registration() }
     }
 
     private fun registration() {
-        val userName: String = textInputUserName.text.toString()
-        val password: String = textInputPassword.text.toString()
-        val passwordRepeat: String = textInputPasswordRepeat.text.toString()
+        val userName: String = binding.textInputUserName.text.toString()
+        val password: String = binding.textInputPassword.text.toString()
+        val passwordRepeat: String = binding.textInputPasswordRepeat.text.toString()
 
         if (!check.checktextInputReg(
                 userName,
@@ -46,8 +46,8 @@ class RegistrationActivity : AppCompatActivity() {
                 toast(R.string.password_incorrect)
             } else {
                 if (!isValid(password)) {
-                    textInputPassword.error = getString(R.string.check_password_length)
-                    textInputPasswordRepeat.error = getString(R.string.check_password_length)
+                    binding.textInputPassword.error = getString(R.string.check_password_length)
+                    binding.textInputPasswordRepeat.error = getString(R.string.check_password_length)
                 } else {
                     lifecycleScope.launch { // если поля ввода заполнены и пароли совпадают запускаем корутину и выполняем post запрос регистрации на сервер
                         try {

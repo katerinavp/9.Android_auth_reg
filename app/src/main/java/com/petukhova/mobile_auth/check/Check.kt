@@ -1,4 +1,4 @@
-package com.petukhova.mobile_auth
+package com.petukhova.mobile_auth.check
 
 class Check() {
 

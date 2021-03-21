@@ -1,11 +1,11 @@
-package com.petukhova.mobile_auth
+package com.petukhova.mobile_auth.retrofit
 
 
+import com.petukhova.mobile_auth.data.AuthRequestParams
+import com.petukhova.mobile_auth.data.Token
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface API {
     // URL запроса (без учета основного адреса)

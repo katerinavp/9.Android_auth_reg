@@ -6,13 +6,27 @@
     android:layout_height="match_parent"
     android:padding="12dp">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateDrawable="@drawable/spinner_ring"
+        android:indeterminateOnly="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/textInputUserName2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Регистрация"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -20,9 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_name"
+        app:counterMaxLength="10"
         app:layout_constraintBottom_toTopOf="@id/guidCenter"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:counterMaxLength="10">
+        app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputUserName"
@@ -35,9 +49,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_password"
+        app:counterMaxLength="15"
         app:layout_constraintTop_toBottomOf="@id/guidCenter"
-        app:passwordToggleEnabled="true"
-        app:counterMaxLength="15">
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputPassword"
@@ -52,9 +66,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/repeate_password"
+        app:counterMaxLength="15"
         app:layout_constraintTop_toBottomOf="@id/textInputPassword2"
-        app:passwordToggleEnabled="true"
-        app:counterMaxLength="15">
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputPasswordRepeat"
@@ -76,8 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/save"
         android:backgroundTint="@color/blue"
+        android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputPasswordRepeat2" />

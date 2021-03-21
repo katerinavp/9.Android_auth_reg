@@ -9,7 +9,9 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.petukhova.mobile_auth.*
+import com.petukhova.mobile_auth.check.Check
 import com.petukhova.mobile_auth.databinding.ActivityAuthBinding
+import com.petukhova.mobile_auth.retrofit.Repository
 import isValid
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,7 +46,7 @@ class MainActivity :
         if (!check.checktextInputAuth(login, password)) { //  проверка на пустые поля ввода
             toast(R.string.enter_login_password)
         } else {
-            if (isValid(password)) {
+            if (!isValid(password)) {
                 binding.textInputPassword.error = getString(R.string.check_password_length)
             } else {
                 binding.progressBar.isVisible =

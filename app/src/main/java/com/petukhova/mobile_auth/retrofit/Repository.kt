@@ -1,6 +1,8 @@
-package com.petukhova.mobile_auth
+package com.petukhova.mobile_auth.retrofit
 
 import android.util.Log
+import com.petukhova.mobile_auth.data.AuthRequestParams
+import com.petukhova.mobile_auth.data.Token
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,7 +11,7 @@ object Repository {
     // Ленивое создание Retrofit экземпляра
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://ktor-coursar.herokuapp.com/api/v1/")
+            .baseUrl("https://katerinavpbackendfornetwork.herokuapp.com/api/v1/")
             .addConverterFactory(GsonConverterFactory.create()) //конвертация объектовв json
             .build()
     }

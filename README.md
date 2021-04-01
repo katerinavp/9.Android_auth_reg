@@ -1,6 +1,9 @@
 # 9.Android_auth_reg
+### Используемые инструменты и технологии:  
+• Kotlin, Retrofit, coroutines, gson. 
 
-Ссылка на backend [Heroku](https://katerinavpbackendfornetwork.herokuapp.com/api/v1/posts)
+### Ссылка на backend [Heroku](https://katerinavpbackendfornetwork.herokuapp.com/api/v1/posts)
+### Реализовано:  
 - Созданы активити для регистрации и аутентификации пользователя.
 - Создан ProgressDialog, который запускается во время авторизации и исчезает при успешной/неуспешной авторизации.
 - Реализована регистрация и аутентификация пользователя.
